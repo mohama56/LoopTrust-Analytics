@@ -4,7 +4,6 @@ import { useRouter } from 'next/router';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import Image from 'next/image';
 
-
 const NavigationHeader: React.FC = () => {
     const router = useRouter();
 
@@ -12,7 +11,7 @@ const NavigationHeader: React.FC = () => {
     const isActive = (path: string) => router.pathname === path;
 
     return (
-        <header className="navigation-header-lg">
+        <header className="navigation-header">
             <div className="navigation-container">
                 <div className="logo-container">
                     <Link href="/" passHref>
