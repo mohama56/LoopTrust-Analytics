@@ -1,244 +1,315 @@
-import React from 'react';
-import { useAccount, useReadContract } from 'wagmi';
-import { LOOPTRUST_ABI, LOOPTRUST_ADDRESS } from '../utils/contract';
-import { useRouter } from 'next/router';
+
+import React, { useState } from 'react';
 import Layout from '../components/Layout';
-import Image from 'next/image';
+import { Card, TabButton, TimeRangeButton } from '../components/ui/index';
+import { useAccount } from 'wagmi';
+import { ConnectButton } from '@rainbow-me/rainbowkit';
 import Link from 'next/link';
+import Image from 'next/image';
+import {
+    LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
+    BarChart, Bar, PieChart, Pie, Cell
+} from 'recharts';
 
-type AnalyticsData = {
-  totalUsers: number;
-  activeSubscriptions: number;
-  averageDuration: number;
-};
+// Types
+type TimeRange = 'day' | 'week' | 'month' | 'year';
+type TabType = 'overview' | 'transactions' | 'tokens' | 'nfts';
 
-// Mock data - replace with real data from your API or contract
-const mockData: AnalyticsData = {
-  totalUsers: 1245,
-  activeSubscriptions: 782,
-  averageDuration: 24, // days
-};
+// Real data for charts
+const overviewData = [
+    { name: 'Jan', value: 4000 },
+    { name: 'Feb', value: 3000 },
+    { name: 'Mar', value: 2000 },
+    { name: 'Apr', value: 2780 },
+    { name: 'May', value: 1890 },
+    { name: 'Jun', value: 2390 },
+    { name: 'Jul', value: 3490 },
+];
+
+const tokenDistributionData = [
+    { name: 'ETH', value: 400 },
+    { name: 'USDC', value: 300 },
+    { name: 'LINK', value: 300 },
+    { name: 'UNI', value: 200 },
+    { name: 'Other', value: 100 },
+];
+
+const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8'];
 
 export default function DashboardPage() {
-  const { address, isConnected } = useAccount();
-  const router = useRouter();
+    const { isConnected } = useAccount();
+    const [timeRange, setTimeRange] = useState<TimeRange>('month');
+    const [activeTab, setActiveTab] = useState<TabType>('overview');
 
-  // Check if user has an active subscription
-  const { data: hasSub, isLoading } = useReadContract({
-    address: LOOPTRUST_ADDRESS as `0x${string}`,
-    abi: LOOPTRUST_ABI,
-    functionName: 'hasActiveSubscription',
-    args: address ? [address] : undefined,
-    query: {
-      enabled: !!address,
-    },
-  });
-
-  // Redirect to home if not connected or no subscription
-  React.useEffect(() => {
-    if (!isConnected) {
-      router.push('/');
-    } else if (hasSub === false && !isLoading) {
-      router.push('/pricing');
-    }
-  }, [isConnected, hasSub, isLoading, router]);
-
-  if (!isConnected || hasSub === false) {
     return (
-        <Layout title="LoopTrust Analytics - Dashboard" description="Your analytics dashboard">
-          <div className="text-center p-12">
-            <div className="mb-6">
-              <div className="w-10 h-10 border-4 border-gray-200 border-t-indigo-500 rounded-full animate-spin mx-auto"></div>
+        <Layout title="LoopTrust Analytics - Dashboard"
+                description="Your personal blockchain analytics dashboard">
+            <div className="min-h-screen bg-gray-50">
+                {/* Dashboard Header */}
+                <div className="bg-gradient-to-r from-teal-600 to-teal-800 text-white py-8 px-4">
+                    <div className="container mx-auto max-w-6xl">
+                        <h1 className="text-3xl font-bold mb-2">Analytics Dashboard</h1>
+                        <p className="text-teal-100">
+                            Monitor your blockchain activity and gain insights into your digital asset portfolio
+                        </p>
+                    </div>
+                </div>
+
+                {/* Dashboard Content */}
+                <div className="container mx-auto max-w-6xl px-4 py-8">
+                    {!isConnected ? (
+                        <div className="text-center py-16">
+                            <div className="mb-6">
+                                <Image
+                                    src="/images/wallet-connect.svg"
+                                    alt="Connect Wallet"
+                                    width={120}
+                                    height={120}
+                                    className="mx-auto"
+                                />
+                            </div>
+                            <h2 className="text-2xl font-bold text-gray-800 mb-4">Connect Your Wallet</h2>
+                            <p className="text-gray-600 max-w-md mx-auto mb-8">
+                                Connect your wallet to access your personalized analytics dashboard and track your blockchain activity.
+                            </p>
+                            <div className="inline-block">
+                                <ConnectButton />
+                            </div>
+                        </div>
+                    ) : (
+                        <>
+                            {/* Time Range Selector */}
+                            <div className="flex justify-end mb-6 space-x-2">
+                                <TimeRangeButton
+                                    active={timeRange === 'day'}
+                                    onClick={() => setTimeRange('day')}
+                                >
+                                    24h
+                                </TimeRangeButton>
+                                <TimeRangeButton
+                                    active={timeRange === 'week'}
+                                    onClick={() => setTimeRange('week')}
+                                >
+                                    7d
+                                </TimeRangeButton>
+                                <TimeRangeButton
+                                    active={timeRange === 'month'}
+                                    onClick={() => setTimeRange('month')}
+                                >
+                                    30d
+                                </TimeRangeButton>
+                                <TimeRangeButton
+                                    active={timeRange === 'year'}
+                                    onClick={() => setTimeRange('year')}
+                                >
+                                    1y
+                                </TimeRangeButton>
+                            </div>
+
+                            {/* Dashboard Tabs */}
+                            <div className="flex border-b border-gray-200 mb-6">
+                                <TabButton
+                                    active={activeTab === 'overview'}
+                                    onClick={() => setActiveTab('overview')}
+                                >
+                                    Overview
+                                </TabButton>
+                                <TabButton
+                                    active={activeTab === 'transactions'}
+                                    onClick={() => setActiveTab('transactions')}
+                                >
+                                    Transactions
+                                </TabButton>
+                                <TabButton
+                                    active={activeTab === 'tokens'}
+                                    onClick={() => setActiveTab('tokens')}
+                                >
+                                    Tokens
+                                </TabButton>
+                                <TabButton
+                                    active={activeTab === 'nfts'}
+                                    onClick={() => setActiveTab('nfts')}
+                                >
+                                    NFTs
+                                </TabButton>
+                            </div>
+
+                            {/* Dashboard Content */}
+                            {activeTab === 'overview' && (
+                                <div className="space-y-6">
+                                    {/* Summary Cards */}
+                                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                                        <Card title="Total Value" value="$12,345.67" change="+5.2%" positive={true} />
+                                        <Card title="Transactions" value="142" change="+12.3%" positive={true} />
+                                        <Card title="Gas Spent" value="0.42 ETH" change="-3.1%" positive={false} />
+                                        <Card title="Active Protocols" value="8" change="+2" positive={true} />
+                                    </div>
+
+                                    {/* Charts */}
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        <div className="bg-white p-4 rounded-lg shadow">
+                                            <h3 className="text-lg font-medium text-gray-800 mb-4">Portfolio Value</h3>
+                                            <div className="h-80">
+                                                <ResponsiveContainer width="100%" height="100%">
+                                                    <LineChart
+                                                        data={overviewData}
+                                                        margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+                                                    >
+                                                        <CartesianGrid strokeDasharray="3 3" />
+                                                        <XAxis dataKey="name" />
+                                                        <YAxis />
+                                                        <Tooltip />
+                                                        <Legend />
+                                                        <Line type="monotone" dataKey="value" stroke="#14b8a6" activeDot={{ r: 8 }} />
+                                                    </LineChart>
+                                                </ResponsiveContainer>
+                                            </div>
+                                        </div>
+
+                                        <div className="bg-white p-4 rounded-lg shadow">
+                                            <h3 className="text-lg font-medium text-gray-800 mb-4">Token Distribution</h3>
+                                            <div className="h-80">
+                                                <ResponsiveContainer width="100%" height="100%">
+                                                    <PieChart>
+                                                        <Pie
+                                                            data={tokenDistributionData}
+                                                            cx="50%"
+                                                            cy="50%"
+                                                            labelLine={false}
+                                                            label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                                                            outerRadius={80}
+                                                            fill="#8884d8"
+                                                            dataKey="value"
+                                                        >
+                                                            {tokenDistributionData.map((entry, index) => (
+                                                                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                                                            ))}
+                                                        </Pie>
+                                                        <Tooltip />
+                                                    </PieChart>
+                                                </ResponsiveContainer>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Recent Activity */}
+                                    <div className="bg-white p-4 rounded-lg shadow">
+                                        <div className="flex justify-between items-center mb-4">
+                                            <h3 className="text-lg font-medium text-gray-800">Recent Activity</h3>
+                                            <Link href="/analytics" className="text-teal-600 hover:text-teal-800 text-sm font-medium">
+                                                View All
+                                            </Link>
+                                        </div>
+                                        <div className="overflow-x-auto">
+                                            <table className="min-w-full divide-y divide-gray-200">
+                                                <thead className="bg-gray-50">
+                                                    <tr>
+                                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                            Type
+                                                        </th>
+                                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                            Asset
+                                                        </th>
+                                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                            Amount
+                                                        </th>
+                                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                            Date
+                                                        </th>
+                                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                            Status
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody className="bg-white divide-y divide-gray-200">
+                                                    <tr>
+                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                            Swap
+                                                        </td>
+                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                            ETH → USDC
+                                                        </td>
+                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                            0.5 ETH
+                                                        </td>
+                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                            2023-06-15
+                                                        </td>
+                                                        <td className="px-6 py-4 whitespace-nowrap">
+                                                            <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                                                Completed
+                                                            </span>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                            Transfer
+                                                        </td>
+                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                            USDC
+                                                        </td>
+                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                            500 USDC
+                                                        </td>
+                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                            2023-06-14
+                                                        </td>
+                                                        <td className="px-6 py-4 whitespace-nowrap">
+                                                            <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                                                Completed
+                                                            </span>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                            Stake
+                                                        </td>
+                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                            ETH
+                                                        </td>
+                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                            2 ETH
+                                                        </td>
+                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                            2023-06-10
+                                                        </td>
+                                                        <td className="px-6 py-4 whitespace-nowrap">
+                                                            <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                                                Completed
+                                                            </span>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+
+                            {activeTab === 'transactions' && (
+                                <div className="bg-white p-4 rounded-lg shadow">
+                                    <h3 className="text-lg font-medium text-gray-800 mb-4">Transaction History</h3>
+                                    <p className="text-gray-600">Detailed transaction data will appear here.</p>
+                                </div>
+                            )}
+
+                            {activeTab === 'tokens' && (
+                                <div className="bg-white p-4 rounded-lg shadow">
+                                    <h3 className="text-lg font-medium text-gray-800 mb-4">Token Holdings</h3>
+                                    <p className="text-gray-600">Your token portfolio will appear here.</p>
+                                </div>
+                            )}
+
+                            {activeTab === 'nfts' && (
+                                <div className="bg-white p-4 rounded-lg shadow">
+                                    <h3 className="text-lg font-medium text-gray-800 mb-4">NFT Collection</h3>
+                                    <p className="text-gray-600">Your NFT collection will appear here.</p>
+                                </div>
+                            )}
+                        </>
+                    )}
+                </div>
             </div>
-            <p className="text-gray-600">Loading your dashboard...</p>
-          </div>
         </Layout>
     );
-  }
-
-  return (
-      <Layout title="LoopTrust Analytics - Dashboard" description="Your analytics dashboard">
-        <div className="max-w-6xl mx-auto">
-          <div className="flex justify-between items-center mb-8">
-            <h1 className="text-3xl font-bold text-gray-800">Your Analytics Dashboard</h1>
-            <div className="bg-green-50 text-green-700 px-4 py-2 rounded-lg font-medium">
-              Premium Access Active
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <DashboardCard
-                title="Total Transactions"
-                value="247"
-                change="+12%"
-                isPositive={true}
-            />
-            <DashboardCard
-                title="Gas Spent (MATIC)"
-                value="32.45"
-                change="-5%"
-                isPositive={false}
-            />
-            <DashboardCard
-                title="Smart Contract Interactions"
-                value="89"
-                change="+23%"
-                isPositive={true}
-            />
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-            {/* Activity Chart */}
-            <div className="bg-white rounded-xl shadow-md p-6">
-              <h2 className="text-xl font-bold text-gray-800 mb-4">Recent Activity</h2>
-              <div className="h-64 bg-gray-50 rounded flex items-center justify-center">
-                <Image
-                    src="/chart-placeholder.png"
-                    alt="Activity Chart"
-                    width={400}
-                    height={200}
-                    className="mx-auto"
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement;
-                      target.style.display = 'none';
-                      const parent = target.parentElement;
-                      if (parent) {
-                        parent.innerHTML += '<div class="text-gray-400">Transaction activity chart</div>';
-                      }
-                    }}
-                />
-              </div>
-            </div>
-
-            {/* Wallet Overview */}
-            <div className="bg-white rounded-xl shadow-md p-6">
-              <h2 className="text-xl font-bold text-gray-800 mb-4">Wallet Overview</h2>
-              <div className="h-64 bg-gray-50 rounded flex items-center justify-center">
-                <Image
-                    src="/wallet-placeholder.png"
-                    alt="Wallet Overview"
-                    width={400}
-                    height={200}
-                    className="mx-auto"
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement;
-                      target.style.display = 'none';
-                      const parent = target.parentElement;
-                      if (parent) {
-                        parent.innerHTML += '<div class="text-gray-400">Wallet asset distribution</div>';
-                      }
-                    }}
-                />
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-xl shadow-md p-6 mb-8">
-            <h2 className="text-xl font-bold text-gray-800 mb-4">Recent Transactions</h2>
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                <tr className="bg-gray-50">
-                  <th className="py-3 px-4 text-left text-sm font-medium text-gray-500">Hash</th>
-                  <th className="py-3 px-4 text-left text-sm font-medium text-gray-500">Type</th>
-                  <th className="py-3 px-4 text-left text-sm font-medium text-gray-500">Date</th>
-                  <th className="py-3 px-4 text-right text-sm font-medium text-gray-500">Value</th>
-                  <th className="py-3 px-4 text-right text-sm font-medium text-gray-500">Gas</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr className="border-b border-gray-100">
-                  <td className="py-3 px-4 text-indigo-500">0x1a2b...3c4d</td>
-                  <td className="py-3 px-4">Transfer</td>
-                  <td className="py-3 px-4">2025-04-22 14:32</td>
-                  <td className="py-3 px-4 text-right">0.5 MATIC</td>
-                  <td className="py-3 px-4 text-right">0.002 MATIC</td>
-                </tr>
-                <tr className="border-b border-gray-100">
-                  <td className="py-3 px-4 text-indigo-500">0x5e6f...7g8h</td>
-                  <td className="py-3 px-4">Contract Call</td>
-                  <td className="py-3 px-4">2025-04-21 09:17</td>
-                  <td className="py-3 px-4 text-right">0.0 MATIC</td>
-                  <td className="py-3 px-4 text-right">0.005 MATIC</td>
-                </tr>
-                <tr>
-                  <td className="py-3 px-4 text-indigo-500">0x9i0j...1k2l</td>
-                  <td className="py-3 px-4">Swap</td>
-                  <td className="py-3 px-4">2025-04-20 17:45</td>
-                  <td className="py-3 px-4 text-right">25 USDC</td>
-                  <td className="py-3 px-4 text-right">0.003 MATIC</td>
-                </tr>
-                </tbody>
-              </table>
-            </div>
-            <div className="mt-4 text-right">
-              <Link href="/analytics" className="text-indigo-600 font-medium text-sm hover:text-indigo-700">
-                View All Transactions →
-              </Link>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <QuickLinkCard
-                title="Detailed Analytics"
-                description="Explore transaction history, gas usage, and more"
-                link="/analytics"
-                icon="📊"
-            />
-            <QuickLinkCard
-                title="Research & Insights"
-                description="Access market reports and whale tracking data"
-                link="/research"
-                icon="🔍"
-            />
-            <QuickLinkCard
-                title="Account"
-                description="Manage your subscription and settings"
-                link="/pricing"
-                icon="👤"
-            />
-          </div>
-        </div>
-      </Layout>
-  );
-}
-
-type DashboardCardProps = {
-  title: string;
-  value: string;
-  change: string;
-  isPositive: boolean;
-};
-
-function DashboardCard({ title, value, change, isPositive }: DashboardCardProps) {
-  return (
-      <div className="bg-white rounded-xl shadow-md p-6">
-        <h3 className="text-sm text-gray-500 mb-2">{title}</h3>
-        <div className="flex items-baseline justify-between">
-          <span className="text-2xl font-bold text-gray-800">{value}</span>
-          <span className={`text-sm font-bold ${isPositive ? 'text-green-500' : 'text-red-500'}`}>
-          {change}
-        </span>
-        </div>
-      </div>
-  );
-}
-
-type QuickLinkCardProps = {
-  title: string;
-  description: string;
-  link: string;
-  icon: string;
-};
-
-function QuickLinkCard({ title, description, link, icon }: QuickLinkCardProps) {
-  return (
-      <Link href={link}>
-        <div className="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow cursor-pointer h-full">
-          <div className="text-2xl mb-3">{icon}</div>
-          <h3 className="text-lg font-bold text-gray-800 mb-2">{title}</h3>
-          <p className="text-gray-600">{description}</p>
-        </div>
-      </Link>
-  );
 }
