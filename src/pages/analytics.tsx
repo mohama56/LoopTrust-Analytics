@@ -155,10 +155,8 @@ export default function AnalyticsPage() {
 
                         <div className="mt-8 bg-indigo-50 border border-indigo-100 rounded-lg p-6 text-center">
                             <p className="text-indigo-700 mb-4">This is sample data. Subscribe to access your actual blockchain analytics.</p>
-                            <Link href="/pricing" passHref>
-                                <button className="bg-indigo-600 text-white px-6 py-2 rounded-md font-medium hover:bg-indigo-700 transition-colors">
-                                    View Pricing
-                                </button>
+                            <Link href="/pricing" className="bg-indigo-600 text-white px-6 py-2 rounded-md font-medium hover:bg-indigo-700 transition-colors">
+                                View Pricing
                             </Link>
                         </div>
                     </>
@@ -187,10 +185,8 @@ const SubscriptionRequiredMessage = ({ showSample, onToggleSample }: { showSampl
             You need an active subscription to access detailed analytics of your blockchain activities.
         </p>
         <div className="flex flex-col md:flex-row justify-center items-center gap-4">
-            <Link href="/pricing" passHref>
-                <button className="bg-indigo-600 text-white px-6 py-3 rounded-md font-bold hover:bg-indigo-700 transition-colors">
-                    Subscribe Now - Only $7/month
-                </button>
+            <Link href="/pricing" className="bg-indigo-600 text-white px-6 py-3 rounded-md font-bold hover:bg-indigo-700 transition-colors">
+                Subscribe Now - Only $7/month
             </Link>
             <button
                 onClick={onToggleSample}
