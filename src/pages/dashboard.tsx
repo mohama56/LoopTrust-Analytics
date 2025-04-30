@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import Layout from '../components/Layout';
 import { Card, TabButton, TimeRangeButton } from '../components/ui/index';
@@ -8,7 +7,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import {
     LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
-    BarChart, Bar, PieChart, Pie, Cell
+    PieChart, Pie, Cell
 } from 'recharts';
 
 // Types
@@ -313,3 +312,4 @@ export default function DashboardPage() {
         </Layout>
     );
 }
+
