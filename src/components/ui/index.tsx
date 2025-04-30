@@ -1,4 +1,3 @@
-
 import React, { ReactNode } from 'react';
 
 // Card component for consistent styling
@@ -11,6 +10,29 @@ export const Card = ({
 }) => (
     <div className={`bg-white/80 rounded-lg shadow-md p-6 ${className}`}>
         {children}
+    </div>
+);
+
+// Dashboard Card component that matches what dashboard.tsx is expecting
+export const DashboardCard = ({
+                         title,
+                         value,
+                         change,
+                         positive
+                     }: {
+    title: string,
+    value: string,
+    change: string,
+    positive: boolean
+}) => (
+    <div className="bg-white rounded-lg shadow p-4">
+      <h3 className="text-sm text-gray-500 mb-1">{title}</h3>
+      <div className="flex items-baseline justify-between">
+        <span className="text-2xl font-bold text-gray-800">{value}</span>
+        <span className={`text-sm font-medium ${positive ? 'text-green-500' : 'text-red-500'}`}>
+          {change}
+        </span>
+      </div>
     </div>
 );
 
