@@ -56,9 +56,9 @@ const ServiceCard = ({ title, description, iconSrc, link }: { title: string, des
                 border-radius: 12px;
                 padding: 2px;
                 background: linear-gradient(135deg, rgba(63, 191, 191, 0.5) 0%, transparent 50%, transparent 100%);
-                -webkit-mask: 
-                    linear-gradient(to bottom, #fff 0%, #fff 100%) content-box,
-                    linear-gradient(to bottom, #fff 0%, #fff 100%) border-box;
+                -webkit-mask:
+                        linear-gradient(to bottom, #fff 0%, #fff 100%) content-box,
+                        linear-gradient(to bottom, #fff 0%, #fff 100%) border-box;
                 -webkit-mask-composite: xor;
                 mask:
                         linear-gradient(to bottom, #fff 0%, #fff 100%) content-box,
@@ -230,7 +230,7 @@ export default function Home() {
             {/* Main content wrapper */}
             <div className="container mx-auto max-w-7xl px-4">
                 {/* Hero Section */}
-                <div className="hero-section-lg">
+                <div className="hero-section">
                     <div className="hero-content">
                         <div className="logo-container">
                             <Image
@@ -274,21 +274,18 @@ export default function Home() {
                             iconSrc="/icons/chart-icon-teal.svg"
                             link="/services/api-dashboards"
                         />
-                        <div className="glowing-border"></div>
                         <ServiceCard
                             title="Real-Time Risk & Wallet Intelligence"
                             description="Risk score API that flags suspicious wallet behavior. Get detailed reports on address history, clusters, and risk assessment."
                             iconSrc="/icons/security-icon-teal.svg"
                             link="/services/risk-intelligence"
                         />
-                        <div className="glowing-border"></div>
                         <ServiceCard
                             title="Market Intel & Trading Analytics"
                             description="Trading dashboards with whale tracker alerts, DEX flow monitoring, and on-chain volume analytics for traders and funds."
                             iconSrc="/icons/trading-icon-teal.svg"
                             link="/services/trading-analytics"
                         />
-                        <div className="glowing-border"></div>
                     </div>
                 </div>
 
@@ -305,25 +302,21 @@ export default function Home() {
                             description="Track user growth, monitor smart contract usage, and quantify protocol performance."
                             iconSrc="/icons/defi-icon-teal.svg"
                         />
-                        <div className="glowing-border"></div>
                         <ClientCard
                             title="Financial Institutions"
                             description="Enhance compliance workflows with wallet risk intelligence and AML monitoring."
                             iconSrc="/icons/finance-icon-teal.svg"
                         />
-                        <div className="glowing-border"></div>
                         <ClientCard
                             title="Web3 Companies"
                             description="Integrate blockchain data into your existing business workflows and KPI dashboards."
                             iconSrc="/icons/web-icon-teal.svg"
                         />
-                        <div className="glowing-border"></div>
                         <ClientCard
                             title="Traders & Funds"
                             description="Gain market edge with real-time on-chain insights and whale tracking."
                             iconSrc="/icons/trader-icon-teal.svg"
                         />
-                        <div className="glowing-border"></div>
                     </div>
                 </div>
 
@@ -387,6 +380,7 @@ export default function Home() {
                     align-items: center;
                     justify-content: center;
                     padding: 3rem 1rem;
+                    position: relative;
                 }
 
                 .hero-content {
@@ -438,6 +432,7 @@ export default function Home() {
                 /* Section Styles */
                 .section {
                     margin-bottom: 5rem;
+                    position: relative;
                 }
 
                 .section-header {
