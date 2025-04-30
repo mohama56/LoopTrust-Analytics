@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Layout from '../components/Layout';
 
@@ -7,7 +6,7 @@ export default function AboutPage() {
         <Layout title="LoopTrust Analytics - About Us"
                 description="Learn about LoopTrust Analytics, our mission, and our approach to blockchain data">
             {/* Page Header - Added faded teal to left side */}
-            <div className="page-header bg-gradient-to-r from-teal-100 via-teal-50 to-teal-200 py-16 border-b border-teal-300">
+            <div className="page-header bg-gradient-to-r from-teal-600 via-teal-100 to-teal-300 py-16 border-b border-teal-700">
                 <div className="container mx-auto max-w-6xl px-4 text-center">
                     <h1 className="text-5xl font-extrabold text-teal-700 mb-4 relative">
                         About LoopTrust
@@ -18,29 +17,28 @@ export default function AboutPage() {
                     </p>
                 </div>
             </div>
-            
-            {/* Main content */}
+
             <div className="container mx-auto max-w-6xl px-4 py-16">
-                <div className="mb-16">
-                    <div className="text-center">
-                        <h2 className="text-4xl font-extrabold mb-10 text-transparent bg-clip-text bg-gradient-to-r from-teal-300 via-teal-200 to-teal-400 inline-block drop-shadow-md" style={{textShadow: "0 0 15px rgba(20, 184, 166, 0.5)"}}>
+                {/* Mission Section - Text changed to white against dark background */}
+                <section className="mb-20">
+                    <div className="mx-auto text-center max-w-4xl bg-gradient-to-br from-teal-700 to-teal-900 p-10 rounded-xl shadow-xl">
+                        <h2 className="text-4xl font-extrabold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-teal-200 via-white to-teal-200 inline-block drop-shadow-md" style={{textShadow: "0 0 15px rgba(255, 255, 255, 0.6)"}}>
                             Our Mission
                         </h2>
-                    </div>
-                    <div className="max-w-4xl mx-auto text-center">
-                        <p className="text-xl text-gray-700 leading-relaxed mb-6">
-                            At LoopTrust Analytics, we believe that blockchain data holds the key to unlocking unprecedented 
-                            business intelligence. Our mission is to transform complex on-chain data into actionable insights 
-                            that drive better decision-making for enterprises and institutions.
+                        <p className="text-white text-lg leading-relaxed mb-6">
+                            LoopTrust Analytics was founded with a simple mission: to make blockchain data
+                            accessible, understandable, and actionable for everyone—from individual investors to enterprise
+                            organizations.
                         </p>
-                        <p className="text-xl text-gray-700 leading-relaxed">
-                            We&apos;re committed to making blockchain analytics accessible, reliable, and valuable for organizations 
-                            at every stage of their blockchain journey - from those exploring the technology to those 
-                            building the future of decentralized finance.
+                        <p className="text-white text-lg leading-relaxed">
+                            We believe that transparent, high-quality data is the foundation of the emerging digital
+                            asset economy. Our platform combines powerful analytics tools with expert research to help you
+                            navigate the complex world of blockchain and cryptocurrency.
                         </p>
                     </div>
-                </div>
+                </section>
 
+                {/* Approach Section */}
                 <section className="mb-20">
                     <div className="text-center">
                         <h2 className="text-4xl font-extrabold mb-10 text-transparent bg-clip-text bg-gradient-to-r from-teal-300 via-teal-200 to-teal-400 inline-block drop-shadow-md" style={{textShadow: "0 0 15px rgba(20, 184, 166, 0.5)"}}>
@@ -65,31 +63,29 @@ export default function AboutPage() {
                         </div>
 
                         <div className="bg-white shadow-lg p-8 rounded-lg border-t-2 border-teal-400">
-                            <h3 className="text-2xl font-semibold text-teal-600 mb-4 text-center">Enterprise Focus</h3>
+                            <h3 className="text-2xl font-semibold text-teal-600 mb-4 text-center">Expert Research Team</h3>
                             <p className="text-gray-700 text-base leading-relaxed text-center">
-                                We design our solutions specifically for enterprise needs, with robust security,
-                                compliance features, and dedicated support.
+                                Our team of analysts and researchers provide context and insights that go beyond raw
+                                data, helping you make informed strategic decisions.
                             </p>
                         </div>
                     </div>
                 </section>
 
-                <section className="mb-20">
-                    <div className="text-center">
-                        <h2 className="text-4xl font-extrabold mb-10 text-transparent bg-clip-text bg-gradient-to-r from-teal-300 via-teal-200 to-teal-400 inline-block drop-shadow-md" style={{textShadow: "0 0 15px rgba(20, 184, 166, 0.5)"}}>
-                            Our Team
+                {/* Technology Section - Text changed to white against dark background */}
+                <section>
+                    <div className="mx-auto text-center max-w-4xl bg-gradient-to-br from-teal-700 to-teal-900 p-10 rounded-xl shadow-xl">
+                        <h2 className="text-4xl font-extrabold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-teal-200 via-white to-teal-200 inline-block drop-shadow-md" style={{textShadow: "0 0 15px rgba(255, 255, 255, 0.6)"}}>
+                            Our Technology
                         </h2>
-                    </div>
-                    <div className="max-w-4xl mx-auto text-center">
-                        <p className="text-xl text-gray-700 leading-relaxed mb-6">
-                            LoopTrust brings together experts in blockchain technology, data science, and enterprise
-                            software to create a unique analytics platform that bridges the gap between on-chain data
-                            and business intelligence.
+                        <p className="text-white text-lg leading-relaxed mb-6">
+                            Our proprietary technology stack is designed for speed, scalability, and precision. From
+                            high-performance data ingestion pipelines to advanced analytics, we deliver actionable
+                            intelligence in real time.
                         </p>
-                        <p className="text-xl text-gray-700 leading-relaxed">
-                            Our team combines decades of experience from leading technology companies, financial
-                            institutions, and blockchain projects to deliver solutions that meet the highest standards
-                            of quality and reliability.
+                        <p className="text-white text-lg leading-relaxed">
+                            Whether you're tracking market trends, performing due diligence, or optimizing your
+                            portfolio, LoopTrust provides the tools you need to succeed in the fast-paced world of blockchain.
                         </p>
                     </div>
                 </section>
