@@ -172,9 +172,9 @@ export default function DashboardPage() {
               </table>
             </div>
             <div className="mt-4 text-right">
-              <a href="/analytics" className="text-indigo-600 font-medium text-sm hover:text-indigo-700">
+              <Link href="/analytics" className="text-indigo-600 font-medium text-sm hover:text-indigo-700">
                 View All Transactions →
-              </a>
+              </Link>
             </div>
           </div>
 
