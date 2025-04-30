@@ -1,7 +1,7 @@
 
 # LoopTrust Analytics
 
-![LoopTrust Analytics Logo](/public/LoopTrustAnalytics_Logo.png)
+### ![LoopTrust Analytics Logo](/public/LoopTrustAnalytics_Logo.png)
 
 ## Enterprise Blockchain Analytics Platform
 
