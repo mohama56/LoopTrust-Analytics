@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Layout from '../components/Layout';
-import { Card, TabButton, TimeRangeButton } from '../components/ui/index';
+import { DashboardCard, TabButton, TimeRangeButton } from '../components/ui/index';
 import { useAccount } from 'wagmi';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import Link from 'next/link';
@@ -138,10 +138,30 @@ export default function DashboardPage() {
                                 <div className="space-y-6">
                                     {/* Summary Cards */}
                                     <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                                        <Card title="Total Value" value="$12,345.67" change="+5.2%" positive={true} />
-                                        <Card title="Transactions" value="142" change="+12.3%" positive={true} />
-                                        <Card title="Gas Spent" value="0.42 ETH" change="-3.1%" positive={false} />
-                                        <Card title="Active Protocols" value="8" change="+2" positive={true} />
+                                        <DashboardCard
+                                            title="Total Value"
+                                            value="$12,345.67"
+                                            change="+5.2%"
+                                            positive={true}
+                                        />
+                                        <DashboardCard
+                                            title="Transactions"
+                                            value="142"
+                                            change="+12.3%"
+                                            positive={true}
+                                        />
+                                        <DashboardCard
+                                            title="Gas Spent"
+                                            value="0.42 ETH"
+                                            change="-3.1%"
+                                            positive={false}
+                                        />
+                                        <DashboardCard
+                                            title="Active Protocols"
+                                            value="8"
+                                            change="+2"
+                                            positive={true}
+                                        />
                                     </div>
 
                                     {/* Charts */}
@@ -312,4 +332,3 @@ export default function DashboardPage() {
         </Layout>
     );
 }
-
